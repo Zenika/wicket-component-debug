@@ -1,4 +1,5 @@
 
+
 Wicket Component Debug
 ============================
 
@@ -19,6 +20,14 @@ Features
 Screenshots
 --------
 
+### _Panels bordering example_
+
+![Bordering example](https://github.com/Zenika/wicket-component-debug/raw/gh-pages/screenshot-1.png)  
+
+
+###  _Form highlighting example_
+
+![Highlighting example](https://github.com/Zenika/wicket-component-debug/raw/gh-pages/screenshot-2.png)
 
 How to use
 --------
@@ -66,4 +75,3 @@ At the moment, configuration map includes only those keys :
 Custom plugin
 --------
 
-TODO

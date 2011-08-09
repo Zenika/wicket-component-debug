@@ -75,4 +75,28 @@ At the moment, configuration map includes only those keys :
 Custom plugin
 --------
 
-TODO
+You can enhance `Wicket Component Debug` by creating your own plugins. 
+
+To do so, just create a class that extends `AbstractWicketDebugPlugin` and overrides the `process` method.
+
+    public class MyPlugin extends AbstractWicketDebugPlugin {
+        @Override
+        protected void process(Component component) {
+            System.out.println("Component : " + component);
+        }
+    }
+
+You can also override 3 others methods to easily contribute to the <head/> section of the page.
+
+* `contributeToHead` - Contribute with plain Javascript.
+* `caddJavaScriptReference` - Contribute with a Javascript ResourceReference file.
+* `addCssReference` - Contribute with a CSS ResourceReference file.
+
+
+Look at the [TreePlugin](https://github.com/Zenika/wicket-component-debug/blob/master/src/main/java/com/zenika/wicket/component/debug/plugins/tree/TreePlugin.java) if you want an example of a simple custom plugin. It basically just output the components hierarchy in the console with some customizable parameters such as _wicket:id_, _class_...
+
+![Highlighting](https://github.com/Zenika/wicket-component-debug/raw/gh-pages/screenshot-3.png)
+
+
+If your looking for a more complexe one, try the [ComponentPlugin](https://github.com/Zenika/wicket-component-debug/blob/master/src/main/java/com/zenika/wicket/component/debug/plugins/component/ComponentPlugin.java).
+

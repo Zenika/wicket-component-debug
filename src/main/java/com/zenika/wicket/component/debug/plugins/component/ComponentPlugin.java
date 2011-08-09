@@ -1,8 +1,8 @@
 package com.zenika.wicket.component.debug.plugins.component;
 
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -55,7 +55,7 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 
 	private String swfUrl = null;
 
-	public ComponentPlugin(HashMap<String, String> configuration) {
+	public ComponentPlugin(Map<String, String> configuration) {
 		super(configuration);
 	}
 

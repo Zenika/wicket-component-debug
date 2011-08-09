@@ -2,8 +2,8 @@ package com.zenika.wicket.component.debug.plugins;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
@@ -15,13 +15,13 @@ import com.zenika.wicket.component.debug.utils.WicketUtils;
 @SuppressWarnings("serial")
 public abstract class AbstractWicketDebugPlugin implements WicketDebugPlugin, Serializable {
 
-	protected HashMap<String, String> configuration;
+	protected Map<String, String> configuration;
 
 	public AbstractWicketDebugPlugin() {
 
 	}
 
-	public AbstractWicketDebugPlugin(HashMap<String, String> configuration) {
+	public AbstractWicketDebugPlugin(Map<String, String> configuration) {
 		this.configuration = configuration;
 	}
 

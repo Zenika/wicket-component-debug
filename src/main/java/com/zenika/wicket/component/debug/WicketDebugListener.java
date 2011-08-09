@@ -23,7 +23,7 @@ public class WicketDebugListener implements IComponentOnBeforeRenderListener, Se
 
 	private static final String TRUE = "true";
 
-	private HashMap<String, String> configuration = new HashMap<String, String>();
+	private Map<String, String> configuration = new HashMap<String, String>();
 
 	private List<WicketDebugPlugin> plugins = new ArrayList<WicketDebugPlugin>();
 
@@ -35,7 +35,7 @@ public class WicketDebugListener implements IComponentOnBeforeRenderListener, Se
 			plugins.add(new ComponentPlugin(configuration));
 		}
 
-		addPlugin(plugins);
+		addPlugin(plugins, configuration);
 	}
 
 	private void setDefaultConfiguration() {
@@ -49,7 +49,7 @@ public class WicketDebugListener implements IComponentOnBeforeRenderListener, Se
 
 	}
 
-	protected void addPlugin(List<WicketDebugPlugin> plugins) {
+	protected void addPlugin(List<WicketDebugPlugin> plugins, Map<String, String> configuration) {
 
 	}
 

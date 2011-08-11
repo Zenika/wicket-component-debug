@@ -24,10 +24,10 @@ public class TreeUtils {
 	protected static void generateTree(Component component, LinkedHashSet<Component> components, StringBuffer treeBuffer) {
 
 		// Add the component informations to its markup in a debugid attribute
-		component.add(new AttributeAppender("debugid", new Model<String>(component.getId()), " "));
+		component.add(new AttributeAppender("debugid", new Model(component.getId()), " "));
 
 		// Add the 'component-debug' class for dom mainupulation
-		component.add(new AttributeAppender("class", new Model<String>("component-debug"), " "));
+		component.add(new AttributeAppender("class", new Model("component-debug"), " "));
 
 		// Get the component class
 		String componentClass = getComponentClass(component);

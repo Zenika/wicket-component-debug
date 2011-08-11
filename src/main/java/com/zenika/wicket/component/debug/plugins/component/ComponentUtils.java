@@ -17,11 +17,11 @@ public class ComponentUtils {
 		String componentClass = (component.getClass().getSimpleName().equals("")) ? component.getClass()
 				.getSuperclass().getCanonicalName() : component.getClass().getCanonicalName();
 		buffer.append(";class,").append(componentClass);
-		if (component.getDefaultModel() != null) {
-			buffer.append(";model,").append(component.getDefaultModel().getClass().getCanonicalName());
+		if (component.getModel() != null) {
+			buffer.append(";model,").append(component.getModel().getClass().getCanonicalName());
 			try {
-				if (component.getDefaultModelObject() != null) {
-					buffer.append(";object,").append(component.getDefaultModelObject().getClass().getCanonicalName());
+				if (component.getModelObject() != null) {
+					buffer.append(";object,").append(component.getModelObject().getClass().getCanonicalName());
 				}
 			} catch (WicketRuntimeException e) {
 

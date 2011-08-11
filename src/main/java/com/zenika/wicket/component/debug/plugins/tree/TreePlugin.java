@@ -78,15 +78,14 @@ public class TreePlugin extends AbstractWicketDebugPlugin {
 				treeBuffer.append(" / id : ").append(component.getId());
 			}
 
-			if ("true".equals(configuration.get("tree.plugin.show.model")) && component.getDefaultModel() != null) {
-				treeBuffer.append(" / model : ").append(component.getDefaultModel().getClass().getSimpleName());
+			if ("true".equals(configuration.get("tree.plugin.show.model")) && component.getModel() != null) {
+				treeBuffer.append(" / model : ").append(component.getModel().getClass().getSimpleName());
 			}
 
 			try {
-				if ("true".equals(configuration.get("tree.plugin.show.model.object"))
-						&& component.getDefaultModel() != null && component.getDefaultModelObject() != null) {
-					treeBuffer.append(" / object : ").append(
-							component.getDefaultModelObject().getClass().getSimpleName());
+				if ("true".equals(configuration.get("tree.plugin.show.model.object")) && component.getModel() != null
+						&& component.getModelObject() != null) {
+					treeBuffer.append(" / object : ").append(component.getModelObject().getClass().getSimpleName());
 				}
 			} catch (Exception e) {
 

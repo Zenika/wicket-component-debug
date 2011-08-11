@@ -5,6 +5,8 @@ Wicket Component Debug
 
 `Wicket Component Debug` is a tool that simplify wicket applications maintenance by showing the current page hierarchy _directly_ in the browser.
 
+It's compatible for both Wicket `1.3.x` and `1.4.x`  releases.  ( see [1.3.x branch](https://github.com/Zenika/wicket-component-debug/tree/1.3.x)  )
+
 
 Features
 --------
@@ -34,15 +36,24 @@ How to use
 
 To enable `Wicket Component Debug` just add the listener somewhere in your __WebApplication__ init() method.
 
+
+
     public class MyApplication extends WebApplication {
 
         [...]
 
         @Override
         protected void init() {
+        
             [...]
+            
+            // Wicket 1.4.x and after..
             addPostComponentOnBeforeRenderListener(new WicketDebugListener());
+            
+            // Wicket 1.3.x and prior..
+            addComponentOnBeforeRenderListener(new WicketDebugListener());
             [...]
+            
         }
 
         [...]
@@ -99,4 +110,3 @@ Look at the [TreePlugin](https://github.com/Zenika/wicket-component-debug/blob/m
 
 
 If your looking for a more complexe one, try the [ComponentPlugin](https://github.com/Zenika/wicket-component-debug/blob/master/src/main/java/com/zenika/wicket/component/debug/plugins/component/ComponentPlugin.java).
-

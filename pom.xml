@@ -25,7 +25,7 @@
 	</issueManagement>
 
 	<properties>
-		<wicket.version>1.4.17</wicket.version>
+		<wicket.version>1.5.0</wicket.version>
 		<downloadSources>true</downloadSources>
 		<downloadJavadocs>true</downloadJavadocs>
 	</properties>
@@ -41,6 +41,7 @@
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
 			<version>${wicket.version}</version>
+			<type>pom</type>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

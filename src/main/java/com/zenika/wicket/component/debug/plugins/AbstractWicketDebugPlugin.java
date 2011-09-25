@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 import com.zenika.wicket.component.debug.utils.WicketUtils;
 
@@ -45,23 +45,26 @@ public abstract class AbstractWicketDebugPlugin implements WicketDebugPlugin, Se
 		final StringBuffer contribution = new StringBuffer();
 		contributeToHead(contribution);
 
-		final List<ResourceReference> jsReferences = new ArrayList<ResourceReference>();
+		final List<PackageResourceReference> jsReferences = new ArrayList<PackageResourceReference>();
 		addJavaScriptReference(jsReferences);
 
-		final List<ResourceReference> cssReferences = new ArrayList<ResourceReference>();
+		final List<PackageResourceReference> cssReferences = new ArrayList<PackageResourceReference>();
 		addCssReference(cssReferences);
 
-		component.add(new AbstractBehavior() {
+		component.add(new Behavior() {
+
 			@Override
-			public void renderHead(IHeaderResponse response) {
-				response.renderOnLoadJavascript(contribution.toString());
-				for (ResourceReference resourceReference : jsReferences) {
-					response.renderJavascriptReference(resourceReference);
+			public void renderHead(Component component, IHeaderResponse response) {
+				super.renderHead(component, response);
+				response.renderOnLoadJavaScript(contribution.toString());
+				for (PackageResourceReference resourceReference : jsReferences) {
+					response.renderJavaScriptReference(resourceReference);
 				}
-				for (ResourceReference resourceReference : cssReferences) {
+				for (PackageResourceReference resourceReference : cssReferences) {
 					response.renderCSSReference(resourceReference);
 				}
 			}
+
 		});
 	}
 
@@ -81,7 +84,7 @@ public abstract class AbstractWicketDebugPlugin implements WicketDebugPlugin, Se
 	 * 
 	 * @param jsResourcesReference
 	 */
-	protected void addJavaScriptReference(List<ResourceReference> jsResourcesReference) {
+	protected void addJavaScriptReference(List<PackageResourceReference> jsResourcesReference) {
 
 	}
 
@@ -90,7 +93,7 @@ public abstract class AbstractWicketDebugPlugin implements WicketDebugPlugin, Se
 	 * 
 	 * @param cssResourcesReference
 	 */
-	protected void addCssReference(List<ResourceReference> cssResourcesReference) {
+	protected void addCssReference(List<PackageResourceReference> cssResourcesReference) {
 
 	}
 

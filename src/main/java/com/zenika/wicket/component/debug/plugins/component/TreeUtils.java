@@ -1,14 +1,18 @@
 package com.zenika.wicket.component.debug.plugins.component;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.model.Model;
 
 import com.zenika.wicket.component.debug.utils.WicketUtils;
 
-public class TreeUtils {
+@SuppressWarnings("serial")
+public class TreeUtils implements Serializable {
 
 	/**
 	 * Recursive method building the HTML list that will be converted into a
@@ -24,10 +28,23 @@ public class TreeUtils {
 	protected static void generateTree(Component component, LinkedHashSet<Component> components, StringBuffer treeBuffer) {
 
 		// Add the component informations to its markup in a debugid attribute
-		component.add(new AttributeAppender("debugid", new Model<String>(component.getId()), " "));
+
+		component.add(new Behavior() {
+			@Override
+			public void onComponentTag(Component component, ComponentTag tag) {
+				tag.getAttributes().put("debugid", component.getId());
+				tag.getAttributes().put("class", "component-debug");
+			}
+		});
+
+		// component.add(new AttributeAppender("debugid", new Model<String>(""),
+		// ""));
+		// component.add(new AttributeAppender("debugid", new
+		// Model<String>(component.getId()), ""));
 
 		// Add the 'component-debug' class for dom mainupulation
-		component.add(new AttributeAppender("class", new Model<String>("component-debug"), " "));
+		// component.add(new AttributeAppender("class", new
+		// Model<String>("component-debug"), " "));
 
 		// Get the component class
 		String componentClass = getComponentClass(component);

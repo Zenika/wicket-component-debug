@@ -7,15 +7,16 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.WicketAjaxReference;
-import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
-import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.http.WebRequest;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 import com.zenika.wicket.component.debug.plugins.AbstractWicketDebugPlugin;
 import com.zenika.wicket.component.debug.utils.WicketUtils;
@@ -23,29 +24,29 @@ import com.zenika.wicket.component.debug.utils.WicketUtils;
 @SuppressWarnings("serial")
 public class ComponentPlugin extends AbstractWicketDebugPlugin {
 
-	private static final JavascriptResourceReference JQUERY_JS_REFERENCE = new JavascriptResourceReference(
+	private static final JavaScriptResourceReference JQUERY_JS_REFERENCE = new JavaScriptResourceReference(
 			ComponentPlugin.class, "jquery-1.6.2.js");
 
-	private static final JavascriptResourceReference JQUERY_TIP_JS_REFERENCE = new JavascriptResourceReference(
+	private static final JavaScriptResourceReference JQUERY_TIP_JS_REFERENCE = new JavaScriptResourceReference(
 			ComponentPlugin.class, "jquery.qtip-1.0.min.js");
 
-	private static final JavascriptResourceReference WICKET_AJAX_JS_REFERENCE = new JavascriptResourceReference(
+	private static final JavaScriptResourceReference WICKET_AJAX_JS_REFERENCE = new JavaScriptResourceReference(
 			WicketAjaxReference.class, "wicket-ajax.js");
 
-	private static final JavascriptResourceReference COMPONENT_PLUGIN_JS_REFERENCE = new JavascriptResourceReference(
+	private static final JavaScriptResourceReference COMPONENT_PLUGIN_JS_REFERENCE = new JavaScriptResourceReference(
 			ComponentPlugin.class, "component-plugin.js");
 
-	private static final JavascriptResourceReference JQUERY_TREE_JS_REFERENCE = new JavascriptResourceReference(
+	private static final JavaScriptResourceReference JQUERY_TREE_JS_REFERENCE = new JavaScriptResourceReference(
 			ComponentPlugin.class, "jQuery.Tree.js");
 
-	private static final ResourceReference JQUERY_TREE_CSS_REFERENCE = new ResourceReference(ComponentPlugin.class,
-			"jQuery.Tree.css");
+	private static final PackageResourceReference JQUERY_TREE_CSS_REFERENCE = new PackageResourceReference(
+			ComponentPlugin.class, "jQuery.Tree.css");
 
-	private static final ResourceReference COMPONENT_PLUGIN_CSS_REFERENCE = new ResourceReference(
+	private static final PackageResourceReference COMPONENT_PLUGIN_CSS_REFERENCE = new PackageResourceReference(
 			ComponentPlugin.class, "component-plugin.css");
 
-	private static final ResourceReference CLIPPY_FLASH_REFERENCE = new ResourceReference(ComponentPlugin.class,
-			"clippy.swf");
+	private static final PackageResourceReference CLIPPY_FLASH_REFERENCE = new PackageResourceReference(
+			ComponentPlugin.class, "clippy.swf");
 
 	private static final String TRUE = "true";
 
@@ -63,7 +64,7 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 	 * Add javascript references to the <head/> section
 	 */
 	@Override
-	public void addJavaScriptReference(List<ResourceReference> references) {
+	public void addJavaScriptReference(List<PackageResourceReference> references) {
 		references.add(WICKET_AJAX_JS_REFERENCE);
 		if (TRUE.equalsIgnoreCase(configuration.get("component.plugin.include.jquery"))) {
 			references.add(JQUERY_JS_REFERENCE);
@@ -77,7 +78,7 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 	 * Add css references to the <head/> section
 	 */
 	@Override
-	public void addCssReference(List<ResourceReference> references) {
+	public void addCssReference(List<PackageResourceReference> references) {
 		references.add(JQUERY_TREE_CSS_REFERENCE);
 		references.add(COMPONENT_PLUGIN_CSS_REFERENCE);
 	}
@@ -99,11 +100,12 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 
 			// Insert the components html list to the <head> section
 			final String tree = treeBuffer.toString();
-			component.add(new AbstractBehavior() {
+			component.add(new Behavior() {
 				@Override
-				public void renderHead(IHeaderResponse response) {
-					response.renderJavascript(tree, "treeHead");
+				public void renderHead(Component component, IHeaderResponse response) {
+					response.renderJavaScript(tree, "treeHead");
 				}
+
 			});
 
 			// Add copy to clipboard swf url
@@ -136,7 +138,7 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 					treeBuffer.append("\")");
 				}
 				// Rebuild tree after ajax component rendering
-				AjaxRequestTarget.get().appendJavascript(treeBuffer.toString());
+				AjaxRequestTarget.get().appendJavaScript(treeBuffer.toString());
 			}
 
 			// Set current components in session
@@ -165,18 +167,18 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 	private void setClipboardSwfUrl(Component component) {
 		if (swfUrl == null) {
 			String contextPath = getContextPath();
-			swfUrl = component.urlFor(CLIPPY_FLASH_REFERENCE).toString();
+			swfUrl = component.urlFor(CLIPPY_FLASH_REFERENCE, new PageParameters()).toString();
 			configuration.put("swf.url", contextPath + "/" + swfUrl);
 		}
 	}
 
 	private String getContextPath() {
-		return ((WebRequest) RequestCycle.get().getRequest()).getHttpServletRequest().getContextPath();
+		return ((WebRequest) RequestCycle.get().getRequest()).getContextPath();
 	}
 
 	private HttpSession getHTTPSession() {
 		ServletWebRequest servletWebRequest = (ServletWebRequest) RequestCycle.get().getRequest();
-		return servletWebRequest.getHttpServletRequest().getSession();
+		return servletWebRequest.getContainerRequest().getSession();
 	}
 
 	@SuppressWarnings("unchecked")

@@ -1,9 +1,12 @@
 package com.zenika.wicket.component.debug.plugins.component;
 
+import java.io.Serializable;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 
-public class ComponentUtils {
+@SuppressWarnings("serial")
+public class ComponentUtils implements Serializable {
 
 	/**
 	 * Extract component informations and return them as a string

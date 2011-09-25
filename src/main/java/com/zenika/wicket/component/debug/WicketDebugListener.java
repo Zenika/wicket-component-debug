@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.application.IComponentOnBeforeRenderListener;
-import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
 
 import com.zenika.wicket.component.debug.plugins.WicketDebugPlugin;
@@ -69,15 +69,16 @@ public class WicketDebugListener implements IComponentOnBeforeRenderListener, Se
 	 * Behavior exposing the plugin configuration map <br/>
 	 * to the web page for javascript use.
 	 */
-	private class WicketDebugConfigurationBehavior extends AbstractBehavior implements Serializable {
+	private class WicketDebugConfigurationBehavior extends Behavior implements Serializable {
 
 		private static final String CONFIGURATION_MAP_NAME = "dpc";
 
-		public void renderHead(IHeaderResponse response) {
+		@Override
+		public void renderHead(Component component, IHeaderResponse response) {
 			StringBuffer headBuffer = new StringBuffer();
 			headBuffer.append("var " + CONFIGURATION_MAP_NAME + " = ");
 			headBuffer.append(JsonUtils.mapToJsonString(configuration));
-			response.renderJavascript(headBuffer.toString(), CONFIGURATION_MAP_NAME);
+			response.renderJavaScript(headBuffer.toString(), CONFIGURATION_MAP_NAME);
 		}
 
 	}

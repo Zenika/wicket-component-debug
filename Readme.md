@@ -61,7 +61,7 @@ To enable `Wicket Component Debug` just add the listener somewhere in your __Web
     }
 
 To configure `Wicket Component Debug` you need to override the `configure` method.
-For example, if your application already uses jquery, you can (__and you should__) disable it.
+For example, if your want to disable the component plugin:
 
 	[...]
 
@@ -69,7 +69,7 @@ For example, if your application already uses jquery, you can (__and you should_
 		
 		@Override
 		protected void configure(Map<String, String> configuration) {
-			configuration.put("component.plugin.include.jquery", "false");
+			configuration.put("component.plugin.enable", "false");
 		}
 		
 	});
@@ -79,7 +79,6 @@ For example, if your application already uses jquery, you can (__and you should_
 At the moment, configuration map includes only those keys :
 
 * `component.plugin.enable` - Enable or disable the component plugin (default : true)
-* `component.plugin.include.jquery` - Include jquery (default : true, jquery 1.6.2)
 * `component.plugin.border.colors` - Comma seperated list of hexadecimal colors for component bordering.
 * `component.plugin.clipboard.copy` - Display the copy to clipboard link (default : true)
 

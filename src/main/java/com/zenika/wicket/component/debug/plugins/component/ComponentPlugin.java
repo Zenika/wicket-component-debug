@@ -27,7 +27,7 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 			ComponentPlugin.class, "jquery-1.6.2.js");
 
 	private static final JavascriptResourceReference JQUERY_TIP_JS_REFERENCE = new JavascriptResourceReference(
-			ComponentPlugin.class, "jquery.qtip-1.0.min.js");
+			ComponentPlugin.class, "jquery.qtip-1.0.0-rc3.js");
 
 	private static final JavascriptResourceReference WICKET_AJAX_JS_REFERENCE = new JavascriptResourceReference(
 			WicketAjaxReference.class, "wicket-ajax.js");
@@ -47,8 +47,6 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 	private static final ResourceReference CLIPPY_FLASH_REFERENCE = new ResourceReference(ComponentPlugin.class,
 			"clippy.swf");
 
-	private static final String TRUE = "true";
-
 	private static final String PAGE_SESSION_KEY = "wicket-debug-page";
 
 	private static final String COMPONENTS_SESSION_KEY = "wicket-debug-components";
@@ -65,9 +63,7 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 	@Override
 	public void addJavaScriptReference(List<ResourceReference> references) {
 		references.add(WICKET_AJAX_JS_REFERENCE);
-		if (TRUE.equalsIgnoreCase(configuration.get("component.plugin.include.jquery"))) {
-			references.add(JQUERY_JS_REFERENCE);
-		}
+		references.add(JQUERY_JS_REFERENCE);
 		references.add(JQUERY_TIP_JS_REFERENCE);
 		references.add(COMPONENT_PLUGIN_JS_REFERENCE);
 		references.add(JQUERY_TREE_JS_REFERENCE);

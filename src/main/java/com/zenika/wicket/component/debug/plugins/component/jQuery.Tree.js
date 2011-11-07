@@ -136,4 +136,4 @@
 		setLabelClass(checkbox);
 	}
 
-})(jQuery);
+})(jQueryComponentDebug);

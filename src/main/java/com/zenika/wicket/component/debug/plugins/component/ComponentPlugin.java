@@ -27,7 +27,7 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 			ComponentPlugin.class, "jquery-1.6.2.js");
 
 	private static final JavascriptResourceReference JQUERY_TIP_JS_REFERENCE = new JavascriptResourceReference(
-			ComponentPlugin.class, "jquery.qtip-1.0.min.js");
+			ComponentPlugin.class, "jquery.qtip-1.0.0-rc3.js");
 
 	private static final JavascriptResourceReference WICKET_AJAX_JS_REFERENCE = new JavascriptResourceReference(
 			WicketAjaxReference.class, "wicket-ajax.js");
@@ -38,16 +38,14 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 	private static final JavascriptResourceReference JQUERY_TREE_JS_REFERENCE = new JavascriptResourceReference(
 			ComponentPlugin.class, "jQuery.Tree.js");
 
-	private static final ResourceReference JQUERY_TREE_CSS_REFERENCE = new ResourceReference(ComponentPlugin.class,
-			"jQuery.Tree.css");
+	private static final ResourceReference JQUERY_TREE_CSS_REFERENCE = new ResourceReference(
+			ComponentPlugin.class, "jQuery.Tree.css");
 
 	private static final ResourceReference COMPONENT_PLUGIN_CSS_REFERENCE = new ResourceReference(
 			ComponentPlugin.class, "component-plugin.css");
 
-	private static final ResourceReference CLIPPY_FLASH_REFERENCE = new ResourceReference(ComponentPlugin.class,
-			"clippy.swf");
-
-	private static final String TRUE = "true";
+	private static final ResourceReference CLIPPY_FLASH_REFERENCE = new ResourceReference(
+			ComponentPlugin.class, "clippy.swf");
 
 	private static final String PAGE_SESSION_KEY = "wicket-debug-page";
 
@@ -65,9 +63,7 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 	@Override
 	public void addJavaScriptReference(List<ResourceReference> references) {
 		references.add(WICKET_AJAX_JS_REFERENCE);
-		if (TRUE.equalsIgnoreCase(configuration.get("component.plugin.include.jquery"))) {
-			references.add(JQUERY_JS_REFERENCE);
-		}
+		references.add(JQUERY_JS_REFERENCE);
 		references.add(JQUERY_TIP_JS_REFERENCE);
 		references.add(COMPONENT_PLUGIN_JS_REFERENCE);
 		references.add(JQUERY_TREE_JS_REFERENCE);
@@ -93,7 +89,8 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 
 			// Generate the components html list
 			treeBuffer = new StringBuffer();
-			treeBuffer.append("var tree = \"<ul id='wicket-component-debug-tree'>");
+			treeBuffer
+					.append("var tree = \"<ul id='wicket-component-debug-tree'>");
 			TreeUtils.generateTree(component, components, treeBuffer);
 			treeBuffer.append("</ul>\"");
 
@@ -126,12 +123,15 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 				treeBuffer = new StringBuffer();
 				// Handling back button
 				if (components.size() == 1) {
-					treeBuffer.append("alert('After hitting BACK you need to refresh the page in ");
-					treeBuffer.append("order to see ajax components in wicket-component-debug tree.');");
+					treeBuffer
+							.append("alert('After hitting BACK you need to refresh the page in ");
+					treeBuffer
+							.append("order to see ajax components in wicket-component-debug tree.');");
 				} else {
 					treeBuffer.append("WicketComponentDebug.buildTree(\"");
 					treeBuffer.append("<ul id='wicket-component-debug-tree'>");
-					TreeUtils.generateTree(getPageInSession(), components, treeBuffer);
+					TreeUtils.generateTree(getPageInSession(), components,
+							treeBuffer);
 					treeBuffer.append("</ul>");
 					treeBuffer.append("\")");
 				}
@@ -152,9 +152,10 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 	 * @return
 	 */
 	private boolean isWantedComponent(Component component) {
-		return WicketUtils.isPanel(component) || WicketUtils.isForm(component) || WicketUtils.isButton(component)
-				|| WicketUtils.isWebMarkupContainer(component) || WicketUtils.isField(component)
-				&& component.isVisible();
+		return WicketUtils.isPanel(component) || WicketUtils.isForm(component)
+				|| WicketUtils.isButton(component)
+				|| WicketUtils.isWebMarkupContainer(component)
+				|| WicketUtils.isField(component) && component.isVisible();
 	}
 
 	/**
@@ -171,11 +172,13 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 	}
 
 	private String getContextPath() {
-		return ((WebRequest) RequestCycle.get().getRequest()).getHttpServletRequest().getContextPath();
+		return ((WebRequest) RequestCycle.get().getRequest())
+				.getHttpServletRequest().getContextPath();
 	}
 
 	private HttpSession getHTTPSession() {
-		ServletWebRequest servletWebRequest = (ServletWebRequest) RequestCycle.get().getRequest();
+		ServletWebRequest servletWebRequest = (ServletWebRequest) RequestCycle
+				.get().getRequest();
 		return servletWebRequest.getHttpServletRequest().getSession();
 	}
 
@@ -183,9 +186,11 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 	private LinkedHashSet<Component> getComponents() {
 		HttpSession session = getHTTPSession();
 		if (session.getAttribute(COMPONENTS_SESSION_KEY) == null) {
-			session.setAttribute(COMPONENTS_SESSION_KEY, new LinkedHashSet<Component>());
+			session.setAttribute(COMPONENTS_SESSION_KEY,
+					new LinkedHashSet<Component>());
 		}
-		return (LinkedHashSet<Component>) session.getAttribute(COMPONENTS_SESSION_KEY);
+		return (LinkedHashSet<Component>) session
+				.getAttribute(COMPONENTS_SESSION_KEY);
 	}
 
 	private void setComponents(LinkedHashSet<Component> components) {

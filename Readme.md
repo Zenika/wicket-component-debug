@@ -1,11 +1,10 @@
 
-
 Wicket Component Debug
 ============================
 
 `Wicket Component Debug` is a tool that simplify wicket applications maintenance by showing the current page hierarchy _directly_ in the browser.
 
-It's compatible for both Wicket `1.3.x` and `1.4.x`  releases.  ( see [1.3.x branch](https://github.com/Zenika/wicket-component-debug/tree/1.3.x)  )
+It's compatible for Wicket `1.3.x` to `1.5.x` releases.  ( see [1.3.x branch](https://github.com/Zenika/wicket-component-debug/tree/1.3.x)  & [1.4.x branch](https://github.com/Zenika/wicket-component-debug/tree/1.4.x) )
 
 
 Features

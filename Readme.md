@@ -46,7 +46,7 @@ To enable `Wicket Component Debug` just add the listener somewhere in your __Web
         
             [...]
             // Wicket 6.0 and after
-	    getComponentPostOnBeforeRenderListeners().add(new WicketDebugListener());
+            getComponentPostOnBeforeRenderListeners().add(new WicketDebugListener());
 
             // Wicket 1.4.x and after..
             addPostComponentOnBeforeRenderListener(new WicketDebugListener());

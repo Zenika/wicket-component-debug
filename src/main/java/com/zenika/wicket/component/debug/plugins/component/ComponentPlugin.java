@@ -11,7 +11,7 @@ import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebRequest;
@@ -55,7 +55,8 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 
 	private String swfUrl = null;
 
-	public ComponentPlugin(final Map<String, String> configuration) {
+	public ComponentPlugin(final Map<String, String> configuration)
+	{
 		super(configuration);
 	}
 
@@ -64,31 +65,33 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 	 */
 	@Override
 	public void addJavaScriptReference(final List<PackageResourceReference> references) {
-		references.add(WICKET_AJAX_JS_REFERENCE);
-		references.add(JQUERY_JS_REFERENCE);
-		references.add(JQUERY_TIP_JS_REFERENCE);
-		references.add(COMPONENT_PLUGIN_JS_REFERENCE);
-		references.add(JQUERY_TREE_JS_REFERENCE);
+		references.add(ComponentPlugin.WICKET_AJAX_JS_REFERENCE);
+		references.add(ComponentPlugin.JQUERY_TIP_JS_REFERENCE);
+		references.add(ComponentPlugin.COMPONENT_PLUGIN_JS_REFERENCE);
+		references.add(ComponentPlugin.JQUERY_TREE_JS_REFERENCE);
 	}
 
 	/**
 	 * Add css references to the <head/> section
 	 */
 	@Override
-	public void addCssReference(final List<PackageResourceReference> references) {
-		references.add(JQUERY_TREE_CSS_REFERENCE);
-		references.add(COMPONENT_PLUGIN_CSS_REFERENCE);
+	public void addCssReference(final List<PackageResourceReference> references)
+	{
+		references.add(ComponentPlugin.JQUERY_TREE_CSS_REFERENCE);
+		references.add(ComponentPlugin.COMPONENT_PLUGIN_CSS_REFERENCE);
 	}
 
 	@Override
-	protected void process(final Component component) {
+	protected void process(final Component component)
+	{
 
 		// Get current components from session
 		final LinkedHashSet<Component> components = this.getComponents();
 
 		StringBuffer treeBuffer = null;
 
-		if (WicketUtils.isPage(component)) {
+		if (WicketUtils.isPage(component))
+		{
 
 			// Generate the components html list
 			treeBuffer = new StringBuffer();
@@ -98,10 +101,12 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 
 			// Insert the components html list to the <head> section
 			final String tree = treeBuffer.toString();
-			component.add(new Behavior() {
+			component.add(new Behavior()
+			{
 				@Override
-				public void renderHead(final Component component, final IHeaderResponse response) {
-					response.render(OnDomReadyHeaderItem.forScript(tree));
+				public void renderHead(final Component component, final IHeaderResponse response)
+				{
+					response.render(JavaScriptHeaderItem.forScript(tree, "tree"));
 				}
 
 			});
@@ -109,12 +114,15 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 			// Add copy to clipboard swf url
 			this.setClipboardSwfUrl(component);
 
-		} else if (this.isWantedComponent(component)) {
+		}
+		else if (this.isWantedComponent(component))
+		{
 
 			// If the component belong to a different page than the
 			// one in session, change it and clear the components list.
 			// This is not related to ajax components
-			if (!component.getPage().equals(this.getPageInSession())) {
+			if (!component.getPage().equals(this.getPageInSession()))
+			{
 				this.setPageInSession(component.getPage());
 				components.clear();
 			}
@@ -122,13 +130,18 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 			components.add(component);
 
 			// Ajax components treatment
-			if (RequestCycle.get().find(AjaxRequestTarget.class) != null) {
+			if (RequestCycle.get().find(AjaxRequestTarget.class) != null)
+			{
 				treeBuffer = new StringBuffer();
 				// Handling back button
-				if (components.size() == 1) {
+				if (components.size() == 1)
+				{
 					treeBuffer.append("alert('After hitting BACK you need to refresh the page in ");
-					treeBuffer.append("order to see ajax components in wicket-component-debug tree.');");
-				} else {
+					treeBuffer
+					.append("order to see ajax components in wicket-component-debug tree.');");
+				}
+				else
+				{
 					treeBuffer.append("WicketComponentDebug.buildTree(\"");
 					treeBuffer.append("<ul id='wicket-component-debug-tree'>");
 					TreeUtils.generateTree(this.getPageInSession(), components, treeBuffer);
@@ -136,7 +149,8 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 					treeBuffer.append("\")");
 				}
 				// Rebuild tree after ajax component rendering
-				RequestCycle.get().find(AjaxRequestTarget.class).appendJavaScript(treeBuffer.toString());
+				RequestCycle.get().find(AjaxRequestTarget.class)
+				.appendJavaScript(treeBuffer.toString());
 			}
 
 			// Set current components in session
@@ -151,10 +165,11 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 	 * @param component
 	 * @return
 	 */
-	private boolean isWantedComponent(final Component component) {
-		return WicketUtils.isPanel(component) || WicketUtils.isForm(component) || WicketUtils.isButton(component)
-				|| WicketUtils.isWebMarkupContainer(component) || WicketUtils.isField(component)
-				&& component.isVisible();
+	private boolean isWantedComponent(final Component component)
+	{
+		return WicketUtils.isPanel(component) || WicketUtils.isForm(component)
+				|| WicketUtils.isButton(component) || WicketUtils.isWebMarkupContainer(component)
+				|| (WicketUtils.isField(component) && component.isVisible());
 	}
 
 	/**
@@ -162,42 +177,55 @@ public class ComponentPlugin extends AbstractWicketDebugPlugin {
 	 *
 	 * @param component
 	 */
-	private void setClipboardSwfUrl(final Component component) {
-		if (this.swfUrl == null) {
+	private void setClipboardSwfUrl(final Component component)
+	{
+		if (this.swfUrl == null)
+		{
 			final String contextPath = this.getContextPath();
-			this.swfUrl = component.urlFor(CLIPPY_FLASH_REFERENCE, new PageParameters()).toString();
+			this.swfUrl = component.urlFor(ComponentPlugin.CLIPPY_FLASH_REFERENCE,
+					new PageParameters()).toString();
 			this.configuration.put("swf.url", contextPath + "/" + this.swfUrl);
 		}
 	}
 
-	private String getContextPath() {
-		return ((WebRequest) RequestCycle.get().getRequest()).getContextPath();
+	private String getContextPath()
+	{
+		return ((WebRequest)RequestCycle.get().getRequest()).getContextPath();
 	}
 
-	private HttpSession getHTTPSession() {
-		final ServletWebRequest servletWebRequest = (ServletWebRequest) RequestCycle.get().getRequest();
+	private HttpSession getHTTPSession()
+	{
+		final ServletWebRequest servletWebRequest = (ServletWebRequest)RequestCycle.get()
+				.getRequest();
 		return servletWebRequest.getContainerRequest().getSession();
 	}
 
 	@SuppressWarnings("unchecked")
-	private LinkedHashSet<Component> getComponents() {
+	private LinkedHashSet<Component> getComponents()
+	{
 		final HttpSession session = this.getHTTPSession();
-		if (session.getAttribute(COMPONENTS_SESSION_KEY) == null) {
-			session.setAttribute(COMPONENTS_SESSION_KEY, new LinkedHashSet<Component>());
+		if (session.getAttribute(ComponentPlugin.COMPONENTS_SESSION_KEY) == null)
+		{
+			session.setAttribute(ComponentPlugin.COMPONENTS_SESSION_KEY,
+					new LinkedHashSet<Component>());
 		}
-		return (LinkedHashSet<Component>) session.getAttribute(COMPONENTS_SESSION_KEY);
+		return (LinkedHashSet<Component>)session
+				.getAttribute(ComponentPlugin.COMPONENTS_SESSION_KEY);
 	}
 
-	private void setComponents(final LinkedHashSet<Component> components) {
-		this.getHTTPSession().setAttribute(COMPONENTS_SESSION_KEY, components);
+	private void setComponents(final LinkedHashSet<Component> components)
+	{
+		this.getHTTPSession().setAttribute(ComponentPlugin.COMPONENTS_SESSION_KEY, components);
 	}
 
-	private Component getPageInSession() {
-		return (Component) this.getHTTPSession().getAttribute(PAGE_SESSION_KEY);
+	private Component getPageInSession()
+	{
+		return (Component)this.getHTTPSession().getAttribute(ComponentPlugin.PAGE_SESSION_KEY);
 	}
 
-	private void setPageInSession(final Component component) {
-		this.getHTTPSession().setAttribute(PAGE_SESSION_KEY, component);
+	private void setPageInSession(final Component component)
+	{
+		this.getHTTPSession().setAttribute(ComponentPlugin.PAGE_SESSION_KEY, component);
 	}
 
 }

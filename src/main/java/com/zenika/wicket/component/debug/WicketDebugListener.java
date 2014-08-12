@@ -10,7 +10,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.application.IComponentOnBeforeRenderListener;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 
 import com.zenika.wicket.component.debug.plugins.WicketDebugPlugin;
 import com.zenika.wicket.component.debug.plugins.component.ComponentPlugin;
@@ -32,7 +32,7 @@ public class WicketDebugListener implements IComponentOnBeforeRenderListener, Se
 		this.setDefaultConfiguration();
 		this.configure(this.configuration);
 
-		if (TRUE.equalsIgnoreCase(this.configuration.get("component.plugin.enable"))) {
+		if (WicketDebugListener.TRUE.equalsIgnoreCase(this.configuration.get("component.plugin.enable"))) {
 			this.plugins.add(new ComponentPlugin(this.configuration));
 		}
 
@@ -40,10 +40,10 @@ public class WicketDebugListener implements IComponentOnBeforeRenderListener, Se
 	}
 
 	private void setDefaultConfiguration() {
-		this.configuration.put("component.plugin.enable", TRUE);
-		this.configuration.put("component.plugin.include.jquery", TRUE);
-		this.configuration.put("component.plugin.border.colors", DEFAULT_BORDER_COLORS);
-		this.configuration.put("component.plugin.clipboard.copy", TRUE);
+		this.configuration.put("component.plugin.enable", WicketDebugListener.TRUE);
+		this.configuration.put("component.plugin.include.jquery", WicketDebugListener.TRUE);
+		this.configuration.put("component.plugin.border.colors", WicketDebugListener.DEFAULT_BORDER_COLORS);
+		this.configuration.put("component.plugin.clipboard.copy", WicketDebugListener.TRUE);
 	}
 
 	protected void configure(final Map<String, String> configuration) {
@@ -78,9 +78,9 @@ public class WicketDebugListener implements IComponentOnBeforeRenderListener, Se
 		@Override
 		public void renderHead(final Component component, final IHeaderResponse response) {
 			final StringBuffer headBuffer = new StringBuffer();
-			headBuffer.append("var " + CONFIGURATION_MAP_NAME + " = ");
+			headBuffer.append("var " + WicketDebugConfigurationBehavior.CONFIGURATION_MAP_NAME + " = ");
 			headBuffer.append(JsonUtils.mapToJsonString(WicketDebugListener.this.configuration));
-			response.render(OnDomReadyHeaderItem.forScript(headBuffer.toString()));
+			response.render(JavaScriptHeaderItem.forScript(headBuffer.toString(), "dpc"));
 		}
 
 	}

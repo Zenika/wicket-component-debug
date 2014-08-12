@@ -7,7 +7,10 @@ import java.util.Map;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
 import com.zenika.wicket.component.debug.utils.WicketUtils;
@@ -21,47 +24,48 @@ public abstract class AbstractWicketDebugPlugin implements WicketDebugPlugin, Se
 
 	}
 
-	public AbstractWicketDebugPlugin(Map<String, String> configuration) {
+	public AbstractWicketDebugPlugin(final Map<String, String> configuration) {
 		this.configuration = configuration;
 	}
 
 	/**
 	 * Run the plugin process
 	 */
-	public final void execute(Component component) {
+	@Override
+	public final void execute(final Component component) {
 		if (WicketUtils.isPage(component)) {
-			headerContribution(component);
+			this.headerContribution(component);
 		}
-		process(component);
+		this.process(component);
 	}
 
 	/**
 	 * Contribute to <head/> all the references added by the plugin
-	 * 
+	 *
 	 * @param component
 	 */
-	private void headerContribution(Component component) {
+	private void headerContribution(final Component component) {
 
 		final StringBuffer contribution = new StringBuffer();
-		contributeToHead(contribution);
+		this.contributeToHead(contribution);
 
 		final List<PackageResourceReference> jsReferences = new ArrayList<PackageResourceReference>();
-		addJavaScriptReference(jsReferences);
+		this.addJavaScriptReference(jsReferences);
 
 		final List<PackageResourceReference> cssReferences = new ArrayList<PackageResourceReference>();
-		addCssReference(cssReferences);
+		this.addCssReference(cssReferences);
 
 		component.add(new Behavior() {
 
 			@Override
-			public void renderHead(Component component, IHeaderResponse response) {
+			public void renderHead(final Component component, final IHeaderResponse response) {
 				super.renderHead(component, response);
-				response.renderOnLoadJavaScript(contribution.toString());
-				for (PackageResourceReference resourceReference : jsReferences) {
-					response.renderJavaScriptReference(resourceReference);
+				response.render(OnDomReadyHeaderItem.forScript(contribution.toString()));
+				for (final PackageResourceReference resourceReference : jsReferences) {
+					response.render(JavaScriptHeaderItem.forReference(resourceReference));
 				}
-				for (PackageResourceReference resourceReference : cssReferences) {
-					response.renderCSSReference(resourceReference);
+				for (final PackageResourceReference resourceReference : cssReferences) {
+					response.render(CssHeaderItem.forReference(resourceReference));
 				}
 			}
 
@@ -72,28 +76,28 @@ public abstract class AbstractWicketDebugPlugin implements WicketDebugPlugin, Se
 
 	/**
 	 * Contribute to <head/> with plain Javascript
-	 * 
+	 *
 	 * @param contributionBuffer
 	 */
-	protected void contributeToHead(StringBuffer contributionBuffer) {
+	protected void contributeToHead(final StringBuffer contributionBuffer) {
 
 	}
 
 	/**
 	 * Add javascript files references to the <head/>
-	 * 
+	 *
 	 * @param jsResourcesReference
 	 */
-	protected void addJavaScriptReference(List<PackageResourceReference> jsResourcesReference) {
+	protected void addJavaScriptReference(final List<PackageResourceReference> jsResourcesReference) {
 
 	}
 
 	/**
 	 * Add css files references to the <head/>
-	 * 
+	 *
 	 * @param cssResourcesReference
 	 */
-	protected void addCssReference(List<PackageResourceReference> cssResourcesReference) {
+	protected void addCssReference(final List<PackageResourceReference> cssResourcesReference) {
 
 	}
 

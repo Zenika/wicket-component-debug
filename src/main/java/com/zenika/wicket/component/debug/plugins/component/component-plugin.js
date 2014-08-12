@@ -11,12 +11,12 @@
 	
 		showDebugWindow : function() {
 			WicketComponentDebug.init();
-			wicketShow(WicketComponentDebug.debugWindowId);
+			Wicket.$(WicketComponentDebug.debugWindowId).style.display='';
 		},
 	
 		hideDebugWindow : function() {
 			WicketComponentDebug.init();
-			wicketHide(WicketComponentDebug.debugWindowId);
+			Wicket.$(WicketComponentDebug.debugWindowId).style.display='none';
 		},
 	
 		clear : function() {
@@ -62,10 +62,10 @@
 		},
 	
 		initDradAndResize : function() {
-			Wicket.Drag.init(wicketGet(WicketComponentDebug.debugWindowDragHandleId), function() {
+			Wicket.Drag.init(Wicket.$(WicketComponentDebug.debugWindowDragHandleId), function() {
 			}, function() {
 			}, WicketComponentDebug.onDrag);
-			Wicket.Drag.init(wicketGet(WicketComponentDebug.debugWindowResizeHandleId), function() {
+			Wicket.Drag.init(Wicket.$(WicketComponentDebug.debugWindowResizeHandleId), function() {
 			}, function() {
 			}, WicketComponentDebug.onResize);
 		},
@@ -307,8 +307,8 @@
 		},
 	
 		onResize : function(element, deltaX, deltaY) {
-			var window = wicketGet(WicketComponentDebug.debugWindowId);
-			var log = wicketGet(WicketComponentDebug.debugWindowLogId);
+			var window = Wicket.$(WicketComponentDebug.debugWindowId);
+			var log = Wicket.$(WicketComponentDebug.debugWindowLogId);
 	
 			var width = parseInt(window.style.width, 10) + deltaX;
 			var height = parseInt(log.style.height, 10) + deltaY;
@@ -332,7 +332,7 @@
 		},
 	
 		onDrag : function(element, deltaX, deltaY) {
-			var w = wicketGet(WicketComponentDebug.debugWindowId);
+			var w = Wicket.$(WicketComponentDebug.debugWindowId);
 	
 			var x = parseInt(w.style.left, 10) + deltaX;
 			var y = parseInt(w.style.top, 10) + deltaY;

@@ -9,7 +9,8 @@ import java.util.Map;
 import org.apache.wicket.Component;
 import org.apache.wicket.application.IComponentOnBeforeRenderListener;
 import org.apache.wicket.behavior.Behavior;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 
 import com.zenika.wicket.component.debug.plugins.WicketDebugPlugin;
 import com.zenika.wicket.component.debug.plugins.component.ComponentPlugin;
@@ -23,43 +24,44 @@ public class WicketDebugListener implements IComponentOnBeforeRenderListener, Se
 
 	private static final String TRUE = "true";
 
-	private Map<String, String> configuration = new HashMap<String, String>();
+	private final Map<String, String> configuration = new HashMap<String, String>();
 
-	private List<WicketDebugPlugin> plugins = new ArrayList<WicketDebugPlugin>();
+	private final List<WicketDebugPlugin> plugins = new ArrayList<WicketDebugPlugin>();
 
 	public WicketDebugListener() {
-		setDefaultConfiguration();
-		configure(configuration);
+		this.setDefaultConfiguration();
+		this.configure(this.configuration);
 
-		if (TRUE.equalsIgnoreCase(configuration.get("component.plugin.enable"))) {
-			plugins.add(new ComponentPlugin(configuration));
+		if (WicketDebugListener.TRUE.equalsIgnoreCase(this.configuration.get("component.plugin.enable"))) {
+			this.plugins.add(new ComponentPlugin(this.configuration));
 		}
 
-		addPlugin(plugins, configuration);
+		this.addPlugin(this.plugins, this.configuration);
 	}
 
 	private void setDefaultConfiguration() {
-		configuration.put("component.plugin.enable", TRUE);
-		configuration.put("component.plugin.include.jquery", TRUE);
-		configuration.put("component.plugin.border.colors", DEFAULT_BORDER_COLORS);
-		configuration.put("component.plugin.clipboard.copy", TRUE);
+		this.configuration.put("component.plugin.enable", WicketDebugListener.TRUE);
+		this.configuration.put("component.plugin.include.jquery", WicketDebugListener.TRUE);
+		this.configuration.put("component.plugin.border.colors", WicketDebugListener.DEFAULT_BORDER_COLORS);
+		this.configuration.put("component.plugin.clipboard.copy", WicketDebugListener.TRUE);
 	}
 
-	protected void configure(Map<String, String> configuration) {
-
-	}
-
-	protected void addPlugin(List<WicketDebugPlugin> plugins, Map<String, String> configuration) {
+	protected void configure(final Map<String, String> configuration) {
 
 	}
 
-	public void onBeforeRender(Component component) {
+	protected void addPlugin(final List<WicketDebugPlugin> plugins, final Map<String, String> configuration) {
+
+	}
+
+	@Override
+	public void onBeforeRender(final Component component) {
 
 		if (WicketUtils.isPage(component)) {
 			component.add(new WicketDebugConfigurationBehavior());
 		}
 
-		for (WicketDebugPlugin plugin : plugins) {
+		for (final WicketDebugPlugin plugin : this.plugins) {
 			plugin.execute(component);
 		}
 
@@ -74,11 +76,11 @@ public class WicketDebugListener implements IComponentOnBeforeRenderListener, Se
 		private static final String CONFIGURATION_MAP_NAME = "dpc";
 
 		@Override
-		public void renderHead(Component component, IHeaderResponse response) {
-			StringBuffer headBuffer = new StringBuffer();
-			headBuffer.append("var " + CONFIGURATION_MAP_NAME + " = ");
-			headBuffer.append(JsonUtils.mapToJsonString(configuration));
-			response.renderJavaScript(headBuffer.toString(), CONFIGURATION_MAP_NAME);
+		public void renderHead(final Component component, final IHeaderResponse response) {
+			final StringBuffer headBuffer = new StringBuffer();
+			headBuffer.append("var " + WicketDebugConfigurationBehavior.CONFIGURATION_MAP_NAME + " = ");
+			headBuffer.append(JsonUtils.mapToJsonString(WicketDebugListener.this.configuration));
+			response.render(JavaScriptHeaderItem.forScript(headBuffer.toString(), "dpc"));
 		}
 
 	}

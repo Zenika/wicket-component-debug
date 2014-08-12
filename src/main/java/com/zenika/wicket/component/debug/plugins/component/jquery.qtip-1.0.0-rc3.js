@@ -12,6 +12,9 @@
  * Released: Tuesday 12th May, 2009 - 00:00
  * Debug: jquery.qtip.debug.js
  */
+
+window.jQueryComponentDebug = $;
+
 (function($)
 {
    // Implementation

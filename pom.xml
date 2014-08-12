@@ -6,7 +6,7 @@
 	<groupId>com.zenika</groupId>
 	<artifactId>wicket-component-debug</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1</version>
+	<version>0.2</version>
 
 	<name>Wicket Component Debug</name>
 
@@ -25,7 +25,7 @@
 	</issueManagement>
 
 	<properties>
-		<wicket.version>1.5.0</wicket.version>
+		<wicket.version>6.16.0</wicket.version>
 		<downloadSources>true</downloadSources>
 		<downloadJavadocs>true</downloadJavadocs>
 	</properties>
@@ -33,15 +33,14 @@
 	<dependencies>
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.4</version>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket</artifactId>
+			<artifactId>wicket-core</artifactId>
 			<version>${wicket.version}</version>
-			<type>pom</type>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
